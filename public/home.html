@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Safe File Transfering System</title>
+  <link rel="stylesheet" type="text/css" href="./css/home.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="promotional_image.jpg" alt="Promotional Image">
+    </div>
+    <div id="app" class="content">
+      <h1>Safe File Transfering System</h1>
+          <button @click="getFileList">获取文件列表</button>
+
+      <!-- 下载列表 -->
+      <table>
+        <thead>
+          <tr>
+            <th>文件名</th>
+            <th>大小</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(file, index)  in fileList" :key="index">
+            <td>{{ file.name }}</td>
+            <td>{{ file.size }}</td>
+            <td>
+              <button @click="downloadFile(file.name)">下载</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <input type="file" id="btnFile">
+      <input type="button" value="上传" @click="upload(0)">
+      <template>
+        <div>
+          <h1>文件上传进度</h1>
+          <div class="progress-container">
+            <div class="progress-bar" :style="{ width: (start / file.size) * 100 + '%' }"></div>
+          </div>
+        </div>
+      </template>
+
+     
+
+      <!-- 下载按钮 -->
+      <!-- <button @click="uploadFile">上传文件</button> -->
+    </div>
+  </div>
+
+  <script src="./js/vue.js"></script>
+  <!-- 使用CDN -->
+<script src="./js/axios.min.js"></script>
+
+  <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script> -->
+  <script src="./js/home.js"></script>
+  
+</body>
+</html>
+<style scoped>
+  .progress-container {
+    width: 100%;
+    height: 20px;
+    background: #ccc;
+    border: 1px solid #333;
+    position: relative;
+  }
+  
+  .progress-bar {
+    height: 100%;
+    background: #4caf50;
+    transition: width 0.2s ease-in-out;
+  }
+  </style>
+  

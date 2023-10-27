@@ -1,0 +1,120 @@
+<html>
+<head>
+    <link rel="stylesheet" href="./css/login.css">
+</head>
+<body>
+    <form action="/login" method="post">
+        <h2>Login</h2>
+        <div class="input-field">
+            <input type="text" name="username" id="username" placeholder="Enter Username">
+        </div>
+        <div class="input-field">
+            <input type="password" name="password" id="password" placeholder="Enter Password">
+        </div>
+        <div class="input-field">
+            <input type="code" name="code" id="code" placeholder="Enter code">
+            <button id="generateCodeButton" type="button">Generate Code</button>
+        </div>
+        <input type="submit" value="LogIn">
+    </form>
+
+    <script >
+        // 获取输入框元素和提交按钮元素
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const codeInput = document.getElementById('code');
+        const submitButton = document.querySelector('input[type="submit"]');
+
+        // 添加输入框的输入事件处理程序
+        usernameInput.addEventListener('input', handleInputChange1);
+        passwordInput.addEventListener('input', handleInputChange);
+        codeInput.addEventListener('input', handleInputChange);
+
+        // 处理输入框的输入事件
+        function handleInputChange() {
+        // 检查三个输入框是否都不为空
+            const isNotEmpty = usernameInput.value.trim() !== '' && passwordInput.value.trim() !== '' && codeInput.value.trim() !== '';
+
+            // 根据输入框内容是否为空来更新提交按钮状态
+            if (isNotEmpty) {
+                submitButton.removeAttribute('disabled');
+                submitButton.style.backgroundColor = 'green';
+            } else {
+                submitButton.setAttribute('disabled', 'disabled');
+                submitButton.style.backgroundColor = 'gray';
+            }
+        }
+        function handleInputChange1() {
+        // 检查三个输入框是否都不为空
+            const isNotEmpty = usernameInput.value.trim() !== '' && passwordInput.value.trim() !== '' && codeInput.value.trim() !== '';
+
+            // 根据输入框内容是否为空来更新提交按钮状态
+            if (isNotEmpty) {
+                submitButton.removeAttribute('disabled');
+                submitButton.style.backgroundColor = 'green';
+            } else {
+                submitButton.setAttribute('disabled', 'disabled');
+                submitButton.style.backgroundColor = 'gray';
+            }
+            if(usernameInput.value.trim() !== ''){
+                const generateCodeButton = document.getElementById('generateCodeButton');
+                generateCodeButton.style.backgroundColor = 'green';
+                generateCodeButton.innerText = '点击发送';
+                generateCodeButton.removeAttribute('disabled');
+            }   
+        }
+
+        // 初始状态，禁用提交按钮
+        submitButton.setAttribute('disabled', 'disabled');
+        submitButton.style.backgroundColor = 'gray';
+
+
+        const generateCodeButton = document.getElementById('generateCodeButton');
+
+        // 初始状态为绿色，文本内容为'点击发送'
+        generateCodeButton.style.backgroundColor = 'gray';
+        generateCodeButton.innerText = '请输入用户名';
+        generateCodeButton.setAttribute('disabled', 'disabled');
+
+        // 添加按钮点击事件处理程序
+        generateCodeButton.addEventListener('click', () => {
+            // 切换按钮状态为灰色，禁用按钮
+            generateCodeButton.style.backgroundColor = 'gray';
+            generateCodeButton.setAttribute('disabled', 'disabled');
+
+            // 文本内容为倒计时
+            let secondsRemaining = 30;
+            generateCodeButton.innerText = `等待 ${secondsRemaining} 秒`;
+
+            // 创建定时器，每秒更新按钮文本
+            const timer = setInterval(() => {
+                secondsRemaining--;
+                generateCodeButton.innerText = `等待 ${secondsRemaining} 秒`;
+
+                // 完成倒计时后，恢复按钮状态
+                if (secondsRemaining <= 0) {
+                clearInterval(timer); // 清除定时器
+                generateCodeButton.style.backgroundColor = 'green';
+                generateCodeButton.innerText = '点击发送';
+                generateCodeButton.removeAttribute('disabled');
+                }
+            }, 1000);
+        });
+
+        
+        generateCodeButton.addEventListener('click', () => {
+            const username = document.getElementById('username').value
+            fetch(`/code?username=${username}`, { method: 'GET' })
+                // .then(response => response.json())
+                .then(data => {
+                    // 在这里处理后端的响应（data 包含后端返回的数据）
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+
+    </script>
+</body>
+</html>
